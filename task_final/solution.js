@@ -34,20 +34,39 @@
 // }
 
 function sendRequest(name, phone, address, goods, sum) {
+    
+    // Объект data для возврата результата
     let data = {goods: [], order: {}};
 
+    // Переменная countOfGoods - кол-во товаров
     let countOfGoods = goods.length;
+    
+    // Добавляем имя и номер клиента
+    data.client = name + " " + phone;
 
-    for (let i = 0; i <= countOfGoods; i += 1) {
-        data.goods.push(goods[i].title);
+    // Добавляем в переменную clientAddress - адрес
+    let clientAddress = "ул. " + address.street + ", дом " + address.house +
+    ", " + address.entrance + " подъезд, " + address.floor + " этаж, кв " + address.flat; 
+    
+    // В объект order передаю адрес и сумму
+    data.order.address = clientAddress;    
+    data.order.sum = sum;
+    
+    // Цикл перебирает аргумент goods который является массивом 
+    for (let i = 0; i < countOfGoods; i += 1) { 
+        
+        // Создаем объект товар и добавлеяем title и count
+        let tovar = {title: goods[i].title, count: goods[i].count};
+        
+        // Добавляем в конец массива data.goods
+        data.goods.push(tovar);
+
     }
 
-    data.order.address = address;
-    data.order.sum = name + phone + address + goods + sum;
+    // Преобразование объекта data в формат JSON
+    let jsonData = JSON.stringify({data});
 
-    data.client = 'Иван';
-
-    let jsonData = JSON.stringify(data);
-
+    // Возврат результата jsonData 
     return jsonData;
+    
 }
